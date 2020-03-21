@@ -1,4 +1,10 @@
 FROM jupyter/scipy-notebook:latest
-MAINTAINER Stepan Kuzmin <to.stepan.kuzmin@gmail.com>
+MAINTAINER Eugine Kang <kangeugine@gmail.com>
 
-RUN conda install --quiet --yes pytorch torchvision -c soumith
+RUN conda install --quiet --yes -c pytorch pytorch \
+    torchtext \
+    torchvision
+RUN conda install --quiet --yes -c conda-forge pytorch-pretrained-bert \
+    transformers
+RUN pip install pytorch-nlp \
+    streamlit

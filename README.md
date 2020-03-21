@@ -2,14 +2,15 @@
 
 -------------------------------------------------------------------------------
 
-[![Build Status](https://travis-ci.org/stepankuzmin/pytorch-notebook.svg?branch=master)](https://travis-ci.org/stepankuzmin/pytorch-notebook)
-![Docker pulls](https://img.shields.io/docker/pulls/stepankuzmin/pytorch-notebook.svg)
-![Docker stars](https://img.shields.io/docker/stars/stepankuzmin/pytorch-notebook.svg)
-[![Metadata](https://images.microbadger.com/badges/image/stepankuzmin/pytorch-notebook.svg)](https://microbadger.com/images/stepankuzmin/pytorch-notebook)
-
 # Jupyter Notebook Pytorch Stack
 
 This image is based on [Jupyter Notebook Scientific Python Stack](https://github.com/jupyter/docker-stacks/tree/master/scipy-notebook).
+
+## Whats New
+* Word Embedding Models: transformers, pytorch-pretrained-bert
+* NLP Tools: torchtext, pytorch-nlp
+* Vision Tools: torchvision
+* Dashboard & Plotting: streamlit
 
 ## What it Gives You
 
@@ -27,7 +28,7 @@ This image is based on [Jupyter Notebook Scientific Python Stack](https://github
 The following command starts a container with the Notebook server listening for HTTP connections on port 8888 with a randomly generated authentication token configured.
 
 ```
-docker run -it --rm -p 8888:8888 stepankuzmin/pytorch-notebook
+docker run -it -p 8888:8888 kangeugine/pytorch-notebook
 ```
 
 Take note of the authentication token included in the notebook startup log messages. Include it in the URL you visit to access the Notebook server or enter it in the Notebook login form.
@@ -39,19 +40,19 @@ The Docker container executes a [`start-notebook.sh` script](../base-notebook/st
 You can pass [Jupyter command line options](https://jupyter.readthedocs.io/en/latest/projects/jupyter-command.html) through the `start-notebook.sh` script when launching the container. For example, to secure the Notebook server with a custom password hashed using `IPython.lib.passwd()` instead of the default token, run the following:
 
 ```
-docker run -d -p 8888:8888 stepankuzmin/pytorch-notebook start-notebook.sh --NotebookApp.password='sha1:74ba40f8a388:c913541b7ee99d15d5ed31d4226bf7838f83a50e'
+docker run -d -p 8888:8888 kangeugine/pytorch-notebook start-notebook.sh --NotebookApp.password='sha1:74ba40f8a388:c913541b7ee99d15d5ed31d4226bf7838f83a50e'
 ```
 
 For example, to set the base URL of the notebook server, run the following:
 
 ```
-docker run -d -p 8888:8888 stepankuzmin/pytorch-notebook start-notebook.sh --NotebookApp.base_url=/some/path
+docker run -d -p 8888:8888 kangeugine/pytorch-notebook start-notebook.sh --NotebookApp.base_url=/some/path
 ```
 
 For example, to disable all authentication mechanisms (not a recommended practice):
 
 ```
-docker run -d -p 8888:8888 stepankuzmin/pytorch-notebook start-notebook.sh --NotebookApp.token=''
+docker run -d -p 8888:8888 kangeugine/pytorch-notebook start-notebook.sh --NotebookApp.token=''
 ```
 
 You can sidestep the `start-notebook.sh` script and run your own commands in the container. See the *Alternative Commands* section later in this document for more information.
@@ -73,7 +74,7 @@ You may mount SSL key and certificate files into a container and configure Jupyt
 ```
 docker run -d -p 8888:8888 \
     -v /some/host/folder:/etc/ssl/notebook \
-    stepankuzmin/pytorch-notebook start-notebook.sh \
+    kangeugine/pytorch-notebook start-notebook.sh \
     --NotebookApp.keyfile=/etc/ssl/notebook/notebook.key
     --NotebookApp.certfile=/etc/ssl/notebook/notebook.crt
 ```
@@ -83,7 +84,7 @@ Alternatively, you may mount a single PEM file containing both the key and certi
 ```
 docker run -d -p 8888:8888 \
     -v /some/host/folder/notebook.pem:/etc/ssl/notebook.pem \
-    stepankuzmin/pytorch-notebook start-notebook.sh \
+    kangeugine/pytorch-notebook start-notebook.sh \
     --NotebookApp.certfile=/etc/ssl/notebook.pem
 ```
 
@@ -112,10 +113,6 @@ source deactivate
 The commands `jupyter`, `ipython`, `python`, `pip`, `easy_install`, and `conda` (among others) are available in both environments. For convenience, you can install packages into either environment regardless of what environment is currently active using commands like the following:
 
 ```
-# install a package into the python2 environment
-pip2 install some-package
-conda install -n python2 some-package
-
 # install a package into the default (python 3.x) environment
 pip3 install some-package
 conda install -n python3 some-package
@@ -129,7 +126,7 @@ conda install -n python3 some-package
 
 ```python
 # Spawn user containers from this image
-c.DockerSpawner.container_image = 'stepankuzmin/pytorch-notebook'
+c.DockerSpawner.container_image = 'kangeugine/pytorch-notebook'
 
 # Have the Spawner override the Docker run command
 c.DockerSpawner.extra_create_kwargs.update({
@@ -142,7 +139,7 @@ c.DockerSpawner.extra_create_kwargs.update({
 The `start.sh` script supports the same features as the default `start-notebook.sh` script (e.g., `GRANT_SUDO`), but allows you to specify an arbitrary command to execute. For example, to run the text-based `ipython` console in a container, do the following:
 
 ```
-docker run -it --rm stepankuzmin/pytorch-notebook start.sh ipython
+docker run -it --rm kangeugine/pytorch-notebook start.sh ipython
 ```
 
 This script is particularly useful when you derive a new Dockerfile from this image and install additional Jupyter applications with subcommands like `jupyter console`, `jupyter kernelgateway`, and `jupyter lab`.
