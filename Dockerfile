@@ -5,6 +5,7 @@ RUN conda install --quiet --yes -c pytorch pytorch \
     torchtext \
     torchvision
 RUN conda install --quiet --yes -c conda-forge pytorch-pretrained-bert \
-    transformers
+    transformers \
+    jupyter_contrib_nbextensions
 RUN pip install pytorch-nlp \
     streamlit
